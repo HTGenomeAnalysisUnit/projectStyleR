@@ -1,0 +1,23 @@
+# Default theme configurations for the scientific project.
+# Users can create their own YAML file with this structure.
+
+default:
+  base_theme: "theme_minimal"
+  font_family: "Fira Sans"
+  axis_text_size: 9
+  axis_title_size: 11
+  # These are parsed as arguments to theme()
+  other_settings:
+    plot.title.position: "plot"
+    plot.caption.position: "plot"
+    legend.position: "bottom"
+    plot.caption: "element_text(hjust = 1, color = 'grey50')"
+
+publication:
+  base_theme: "theme_bw"
+  font_family: "serif"
+  axis_text_size: 8
+  axis_title_size: 10
+  other_settings:
+    panel.grid.minor: "element_blank()"
+    legend.position: "right"

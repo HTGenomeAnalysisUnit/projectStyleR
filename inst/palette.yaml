@@ -1,0 +1,22 @@
+# Default color palettes for the scientific project.
+# Users can create their own YAML file with this structure and load it.
+
+primary:
+  deep_blue: "#0A3B5C"
+  sky_blue: "#56B4E9"
+  orange: "#E69F00"
+  dark_grey: "#2F2F2F"
+  light_grey: "#D3D3D3"
+
+vibrant:
+  magenta: "#CC79A7"
+  green: "#009E73"
+  yellow: "#F0E442"
+  blue: "#0072B2"
+  vermillion: "#D55E00"
+
+muted_tones:
+  sand: "#BCB382"
+  forest: "#618A3D"
+  wine: "#9A4242"
+  slate: "#556B73"

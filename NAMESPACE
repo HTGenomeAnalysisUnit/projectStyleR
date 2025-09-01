@@ -1,0 +1,9 @@
+# Export functions for palettes
+export(display_project_palette)
+export(load_project_palettes)
+export(scale_color_project)
+export(scale_fill_project)
+
+# Export functions for themes
+export(load_project_themes)
+export(theme_project)
