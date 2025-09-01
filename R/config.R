@@ -15,12 +15,13 @@
   }
 }
 
-#' Load project color palettes from a YAML file
+#' Load project color palettes from a YAML file or URL
 #'
 #' Reads a YAML file from a local path or a URL and sets it as the
 #' active list of palettes for the sciplotR package.
 #'
 #' @param path A file path or a URL pointing to a valid .yaml file.
+#' @param github_pat A GitHub Personal Access Token (PAT) for accessing private repositories.
 #' @export
 #' @examples
 #' \dontrun{
@@ -31,9 +32,10 @@
 #' url <- "https://raw.githubusercontent.com/user/repo/main/custom_palettes.yaml"
 #' load_project_palettes(url)
 #' }
-load_project_palettes <- function(path) {
+load_project_palettes <- function(path, github_pat) {
+  content <- .fetch_config_content(path, github_pat)
   tryCatch({
-    palettes <- yaml::read_yaml(path)
+    palettes <- yaml::read_yaml(text = content)
     
     # Basic validation of the file structure
     if (!is.list(palettes) || any(sapply(palettes, function(p) !is.character(p) || is.null(names(p))))) {
@@ -61,13 +63,15 @@ get_project_palettes <- function() {
   palettes
 }
 
-#' Load Project Themes from a YAML file
+#' Load Project Themes from a YAML file or URL
 #'
 #' @param path A file path or URL pointing to a valid YAML theme configuration file.
+#' @param github_pat A GitHub Personal Access Token (PAT) for accessing private repositories.
 #' @export
-load_project_themes <- function(path) {
+load_project_themes <- function(path, github_pat) {
+  content <- .fetch_config_content(path, github_pat)
   tryCatch({
-    .palette_env$themes <- yaml::read_yaml(path)
+    .palette_env$themes <- yaml::read_yaml(text = content)
     message("Successfully loaded themes from: ", path)
   }, error = function(e) {
     stop("Failed to load or parse the theme YAML file: ", e$message)
@@ -85,4 +89,29 @@ get_project_themes <- function() {
     stop("No themes loaded. Please use load_project_themes() or reload the package.", call. = FALSE)
   }
   themes
+}
+
+#' Internal helper to fetch content from local path or URL
+#' @noRd
+.fetch_config_content <- function(path, github_pat = NULL) {
+  # Check if the path is a URL
+  if (grepl("^https?://", path)) {
+    headers <- NULL
+    # If it's a GitHub URL and a PAT is provided, create an auth header
+    if ((grepl("raw\\.githubusercontent\\.com", path) || grepl("github\\.com", path)) && !is.null(github_pat)) {
+      headers <- add_headers(Authorization = paste("token", github_pat))
+      message("Using GitHub PAT for authenticated access.")
+    }
+    
+    response <- GET(path, config = headers)
+    stop_for_status(response, task = "fetch remote configuration file")
+    return(content(response, "text", encoding = "UTF-8"))
+    
+  } else {
+    # It's a local file path
+    if (!file.exists(path)) {
+      stop("Local configuration file not found at: ", path)
+    }
+    return(readLines(path, warn = FALSE, encoding = "UTF-8"))
+  }
 }

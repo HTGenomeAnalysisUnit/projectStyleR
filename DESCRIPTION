@@ -5,4 +5,4 @@ Author: Edoardo Giacopuzzi <edoardo.giacopuzzi@fht.org>
 Description: Provides custom color palettes and a ggplot2 theme to ensure consistent branding across all project visualizations.
 License: MIT
 Encoding: UTF-8
-Imports: ggplot2, scales, showtext, sysfonts, ggsci, yaml
+Imports: ggplot2, scales, showtext, sysfonts, ggsci, yaml, httr
