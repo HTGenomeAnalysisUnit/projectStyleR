@@ -85,7 +85,10 @@ By default, the package uses the `YAML` files it was installed with. You can ove
 load_project_palettes("path/to/my_palettes.yaml")
 
 # Load themes from a raw GitHub URL
-load_project_themes("[https://raw.githubusercontent.com/user/repo/main/configs/project_themes.yaml](https://raw.githubusercontent.com/user/repo/main/configs/project_themes.yaml)")
+load_project_themes("https://raw.githubusercontent.com/user/repo/main/configs/project_themes.yaml")
+
+# Load from a private GitHub repository
+load_project_palettes("https://raw.githubusercontent.com/user/repo/main/configs/project_palettes.yaml", github_pat = "your_github_pat")
 
 # All subsequent plots will use these new configurations
 ```
