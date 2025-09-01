@@ -99,6 +99,8 @@ To achieve consistent styling across your project you can either
 - fork this repository and editing the files in the `inst/` directory to match your project's brand identity and then install the package from your forked repository to share the new defaults with your team.
 - create dedicated `palettes.yaml` and `themes.yaml` files for your project and ideally host them in the project GitHub repository. Then configure your scripts to always load these files from the centralized project source using the `load_project_palettes()` and `load_project_themes()` functions.
 
+When defining fonts, please use the [official Google fonts](https://fonts.google.com/).
+
 ## 📝 License
 
 This project is licensed under the MIT License.

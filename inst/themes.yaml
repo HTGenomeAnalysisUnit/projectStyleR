@@ -15,7 +15,7 @@ default:
 
 publication:
   base_theme: "theme_bw"
-  font_family: "serif"
+  font_family: "Open Sans"
   axis_text_size: 8
   axis_title_size: 10
   other_settings:
