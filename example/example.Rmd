@@ -1,0 +1,71 @@
+---
+title: "test"
+author: "edoardo giacopuzzi"
+date: "2025-09-01"
+output: html_document
+---
+
+## Load packages
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(ggridges)
+library(patchwork)
+library(projectStyleR)
+```
+
+## Standard plot
+
+```{r plot_nostyle}
+data(mpg)
+pos <- position_dodge(0.5)
+
+p1 <- ggplot(mpg, aes(x=as.factor(year), y=hwy, fill=class)) + 
+  geom_violin(position=pos, scale="width", show.legend=F) + 
+  geom_boxplot(position=pos,width=0.3, show.legend=F)
+p2 <- ggplot(mpg, aes(x=cty, y=hwy)) + 
+  geom_point(size=0.6, alpha=0.6, aes(color=class)) + 
+  geom_smooth()
+p3 <- ggplot(mpg, aes(y=model, x=hwy, fill=class)) + 
+  geom_density_ridges(show.legend=F) 
+
+p <- ((p1 / p2) | p3) + 
+  plot_annotation(tag_levels = "a") + 
+  plot_layout(widths = c(2,1), guides = "collect")
+
+p
+```
+
+## Customise style
+
+```{r plot_style}
+data(mpg)
+pos <- position_dodge(0.5)
+
+p1 <- ggplot(mpg, aes(x=as.factor(year), y=hwy, fill=class)) + 
+  geom_violin(position=pos, scale="width", show.legend=F) + 
+  geom_boxplot(position=pos,width=0.3, show.legend=F) + 
+  scale_fill_project()
+p2 <- ggplot(mpg, aes(x=cty, y=hwy)) + 
+  geom_point(size=0.6, alpha=0.6, aes(color=class)) + 
+  geom_smooth() + 
+  scale_color_project()
+p3 <- ggplot(mpg, aes(y=model, x=hwy, fill=class)) + 
+  geom_density_ridges(show.legend=F) + 
+  scale_fill_project()
+
+p <- ((p1 / p2) | p3) + 
+  plot_annotation(tag_levels = "a") + 
+  plot_layout(widths = c(2,1), guides = "collect") & theme_project("publication", legend.key.size = unit(0.2, "cm"))
+
+p
+```
+
+## Save to vectorial SVG or PDF
+
+This is an example on how to generate vectorial image that are consistent by setting the exact dimensions and `scale=1`
+
+```{r plot_save}
+ggsave(p, filename = "plot.pdf", device=cairo_pdf, height=10, width=16.5, unit="cm", path=NULL, scale=1)
+ggsave(p, filename = "plot.svg", device=svg, height=10, width=16.5, unit="cm", path=NULL, scale=1)
+```
