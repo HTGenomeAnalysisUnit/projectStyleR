@@ -23,8 +23,8 @@ if (!requireNamespace("devtools", quietly = TRUE)) {
 }
 
 # Install the package from GitHub
-devtools::install_github("your-organization/projectStyleR")
-remotes::install_github("your-organization/projectStyleR")
+devtools::install_github("https://github.com/HTGenomeAnalysisUnit/projectStyleR")
+remotes::install_github("https://github.com/HTGenomeAnalysisUnit/projectStyleR")
 ```
 
 ## 📊 Usage
