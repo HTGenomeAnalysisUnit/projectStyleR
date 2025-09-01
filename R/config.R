@@ -36,12 +36,7 @@ load_project_palettes <- function(path, github_pat) {
   content <- .fetch_config_content(path, github_pat)
   tryCatch({
     palettes <- yaml::read_yaml(text = content)
-    
-    # Basic validation of the file structure
-    if (!is.list(palettes) || any(sapply(palettes, function(p) !is.character(p) || is.null(names(p))))) {
-        stop("Palette file must be a YAML list where each entry is a named character vector of colors.")
-    }
-    
+        
     .palette_env$palettes <- palettes
     message("Successfully loaded palettes from: ", basename(path))
     invisible(NULL)
