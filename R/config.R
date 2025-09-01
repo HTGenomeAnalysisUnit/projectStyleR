@@ -55,3 +55,16 @@ get_project_palettes <- function() {
   }
   palettes
 }
+
+#' Load Project Themes from a YAML file
+#'
+#' @param path A file path or URL pointing to a valid YAML theme configuration file.
+#' @export
+load_project_themes <- function(path) {
+  tryCatch({
+    .sciplot_env$themes <- yaml::read_yaml(path)
+    message("Successfully loaded themes from: ", path)
+  }, error = function(e) {
+    stop("Failed to load or parse the theme YAML file: ", e$message)
+  })
+}
