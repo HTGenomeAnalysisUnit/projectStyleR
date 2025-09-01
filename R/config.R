@@ -8,6 +8,11 @@
   if (file.exists(default_palette_path)) {
     load_project_palettes(default_palette_path)
   }
+  # Find the default themes file inside the installed package
+  default_theme_path <- system.file("themes.yaml", package = pkgname)
+  if (file.exists(default_theme_path)) {
+    load_project_themes(default_theme_path)
+  }
 }
 
 #' Load project color palettes from a YAML file
