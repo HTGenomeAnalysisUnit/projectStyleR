@@ -99,14 +99,14 @@ get_project_themes <- function() {
     headers <- NULL
     # If it's a GitHub URL and a PAT is provided, create an auth header
     if ((grepl("raw\\.githubusercontent\\.com", path) || grepl("github\\.com", path)) && !is.null(github_pat)) {
-      headers <- add_headers(Authorization = paste("token", github_pat))
+      headers <- httr::add_headers(Authorization = paste("token", github_pat))
       message("Using GitHub PAT for authenticated access.")
     }
-    
-    response <- GET(path, config = headers)
-    stop_for_status(response, task = "fetch remote configuration file")
-    return(content(response, "text", encoding = "UTF-8"))
-    
+
+    response <- httr::GET(path, config = headers)
+    httr::stop_for_status(response, task = "fetch remote configuration file")
+    return(httr::content(response, "text", encoding = "UTF-8"))
+
   } else {
     # It's a local file path
     if (!file.exists(path)) {
