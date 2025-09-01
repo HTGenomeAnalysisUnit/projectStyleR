@@ -13,7 +13,7 @@
 
 <meta name="date" content="2025-09-01" />
 
-<title>test</title>
+<title>projectStyleR example</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,7 +350,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">test</h1>
+<h1 class="title toc-ignore">projectStyleR example</h1>
 <h4 class="author">edoardo giacopuzzi</h4>
 <h4 class="date">2025-09-01</h4>
 
@@ -359,6 +359,11 @@ display: none;
 
 <div id="load-packages" class="section level2">
 <h2>Load packages</h2>
+<pre class="r"><code>library(ggplot2)
+library(ggridges)
+library(patchwork)
+library(projectStyleR)</code></pre>
+<pre><code>## Successfully loaded themes from: /home/edoardo.giacopuzzi/R/x86_64-pc-linux-gnu-library/4.4/projectStyleR/themes.yaml</code></pre>
 </div>
 <div id="standard-plot" class="section level2">
 <h2>Standard plot</h2>
@@ -385,6 +390,9 @@ p</code></pre>
 </div>
 <div id="customise-style" class="section level2">
 <h2>Customise style</h2>
+<p>When composing multiple plots, it is suggested to allow
+<code>patchwork</code> to apply a consistent theme to the whole
+composition using <code>&amp; theme_project()</code></p>
 <pre class="r"><code>data(mpg)
 pos &lt;- position_dodge(0.5)
 
@@ -400,6 +408,8 @@ p3 &lt;- ggplot(mpg, aes(y=model, x=hwy, fill=class)) +
   geom_density_ridges(show.legend=F) + 
   scale_fill_project()
 
+# Apply your desired prohect theme to the whole composition
+# Here we use the example publication theme 
 p &lt;- ((p1 / p2) | p3) + 
   plot_annotation(tag_levels = &quot;a&quot;) + 
   plot_layout(widths = c(2,1), guides = &quot;collect&quot;) &amp; theme_project(&quot;publication&quot;, legend.key.size = unit(0.2, &quot;cm&quot;))</code></pre>

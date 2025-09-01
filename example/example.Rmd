@@ -1,5 +1,5 @@
 ---
-title: "test"
+title: "projectStyleR example"
 author: "edoardo giacopuzzi"
 date: "2025-09-01"
 output: html_document
@@ -7,7 +7,7 @@ output: html_document
 
 ## Load packages
 
-```{r setup, include=FALSE}
+```{r setup}
 library(ggplot2)
 library(ggridges)
 library(patchwork)
@@ -38,6 +38,8 @@ p
 
 ## Customise style
 
+When composing multiple plots, it is suggested to allow `patchwork` to apply a consistent theme to the whole composition using `& theme_project()`
+
 ```{r plot_style}
 data(mpg)
 pos <- position_dodge(0.5)
@@ -54,6 +56,8 @@ p3 <- ggplot(mpg, aes(y=model, x=hwy, fill=class)) +
   geom_density_ridges(show.legend=F) + 
   scale_fill_project()
 
+# Apply your desired prohect theme to the whole composition
+# Here we use the example publication theme 
 p <- ((p1 / p2) | p3) + 
   plot_annotation(tag_levels = "a") + 
   plot_layout(widths = c(2,1), guides = "collect") & theme_project("publication", legend.key.size = unit(0.2, "cm"))
