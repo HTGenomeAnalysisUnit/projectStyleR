@@ -18,7 +18,7 @@ display_project_palette <- function(palette_name) {
   pal <- project_palettes[[palette_name]]
   pal_df <- data.frame(
     name = names(pal),
-    color = unname(pal),
+    color = unliast(unname(pal)),
     stringsAsFactors = FALSE
   )
   

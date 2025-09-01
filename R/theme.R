@@ -28,7 +28,7 @@ theme_project <- function(theme_name = "default", ...) {
   # 3. Handle the font
   font_family <- theme_config$font_family
   tryCatch({
-    sysfonts::font_add_google(font_family, font_family, quiet = TRUE)
+    sysfonts::font_add_google(font_family, font_family)
     showtext::showtext_auto()
   }, error = function(e) {
     warning(paste("Could not download or register font:", font_family, ". It may need to be installed manually."))
