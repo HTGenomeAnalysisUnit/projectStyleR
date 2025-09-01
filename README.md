@@ -35,7 +35,7 @@ The `theme_project()` function applies a predefined theme from your `themes.yaml
 
 ```R
 library(ggplot2)
-library(sciplotR)
+library(projectStyleR)
 
 # Apply the 'default' theme
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +

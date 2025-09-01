@@ -62,9 +62,22 @@ get_project_palettes <- function() {
 #' @export
 load_project_themes <- function(path) {
   tryCatch({
-    .sciplot_env$themes <- yaml::read_yaml(path)
+    .palette_env$themes <- yaml::read_yaml(path)
     message("Successfully loaded themes from: ", path)
   }, error = function(e) {
     stop("Failed to load or parse the theme YAML file: ", e$message)
   })
+}
+
+#' Get the currently loaded project theme
+#'
+#' Internal helper function to safely retrieve themes from the environment.
+#' @return A list of themes.
+#' @noRd
+get_project_themes <- function() {
+  themes <- .palette_env$themes
+  if (is.null(themes)) {
+    stop("No themes loaded. Please use load_project_themes() or reload the package.", call. = FALSE)
+  }
+  themes
 }
