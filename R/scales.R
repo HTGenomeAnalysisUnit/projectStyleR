@@ -64,7 +64,7 @@ scale_color_project <- function(palette = "default", unseen.color = "#B3B3B3", .
   }
   
   pal_func <- create_project_paletter(palette_name = palette, unseen_color = unseen.color)
-  ggplot2::discrete_scale("colour", palette_name = palette, palette = pal_func, ...)
+  ggplot2::discrete_scale("colour", palette = pal_func, ...)
 }
 
 #' Custom discrete fill scale for ggplot2 plots
@@ -82,7 +82,7 @@ scale_fill_project <- function(palette = "default", unseen.color = "#B3B3B3", ..
   }
 
   pal_func <- create_project_paletter(palette_name = palette, unseen_color = unseen.color)
-  ggplot2::discrete_scale("fill", palette_name = palette, palette = pal_func, ...)
+  ggplot2::discrete_scale("fill", palette = pal_func, ...)
 }
 
 
