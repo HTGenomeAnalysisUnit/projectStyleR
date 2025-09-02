@@ -21,6 +21,7 @@ create_project_paletter <- function(palette_name, unseen_color = "#B3B3B3") { # 
 
   # 2. Return a new function (a closure). This is what ggplot will call.
   function(data_levels) {
+    warning("Data levels: ", paste(data_levels, collapse = ", "))
     # 3. Identify which data levels don't have a color in our palette
     unseen_levels <- setdiff(data_levels, names(project_palette))
     
