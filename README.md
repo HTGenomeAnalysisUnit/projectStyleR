@@ -29,7 +29,7 @@ remotes::install_github("https://github.com/HTGenomeAnalysisUnit/projectStyleR")
 
 ## 📊 Usage
 
-1. **Applying a Project Theme**
+### 1. Applying a Project Theme
 
 The `theme_project()` function applies a predefined theme from your `themes.yaml` file.
 
@@ -50,7 +50,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   labs(title = "Publication-Ready Theme")
 ```
 
-2. **Using Color Palettes**
+### 2. Using Color Palettes
 
 The `scale_color_project()` and `scale_fill_project()` functions apply palettes from your `palettes.yaml` for discrete values. The corresponding `scale_color_project_c()` and `scale_fill_project_c()` functions handle continuous values.
 
@@ -76,7 +76,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Petal.Length)) +
 
 When no palette name is specified the package will use the fill/color NPG scale from the `ggsci` package (`scale_color_npg`, `scale_fill_npg`) for discrete values, or the GSEA scale (`scale_color_gsea`, `scale_fill_gsea`) for continuous values.
 
-3. **Viewing Palettes**
+### 3. Viewing Palettes
 
 Visualize any available palette to see its colors and names.
 
@@ -84,7 +84,14 @@ Visualize any available palette to see its colors and names.
 display_project_palette("primary")
 ```
 
-4. **Advanced: Custom Configurations**
+Get the list of available themes or palette
+
+```R
+available_palettes()
+available_themes()
+```
+
+### 4. Custom Configurations
 
 By default, the package uses the `YAML` files it was installed with. You can override this by pointing to your own local or remote files.
 
