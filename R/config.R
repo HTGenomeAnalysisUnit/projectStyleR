@@ -110,3 +110,25 @@ get_project_themes <- function() {
     return(readLines(path, warn = FALSE, encoding = "UTF-8"))
   }
 }
+
+#' Log a list of available palettes
+#'
+#' @export
+available_palettes <- function() {
+  palettes <- get_project_palettes()
+  message("Available palettes:")
+  for (name in names(palettes)) {
+    message(" - ", name)
+  }
+}
+
+#' Log a list of available themes
+#'
+#' @export
+available_themes <- function() {
+  themes <- get_project_themes()
+  message("Available themes:")
+  for (name in names(themes)) {
+    message(" - ", name)
+  }
+}

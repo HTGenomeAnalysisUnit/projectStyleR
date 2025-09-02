@@ -18,7 +18,7 @@ display_project_palette <- function(palette_name) {
   pal <- project_palettes[[palette_name]]
   pal_df <- data.frame(
     name = names(pal),
-    color = unliast(unname(pal)),
+    color = unlist(unname(pal)),
     stringsAsFactors = FALSE
   )
   
@@ -27,7 +27,7 @@ display_project_palette <- function(palette_name) {
   ggplot2::ggplot(pal_df, ggplot2::aes(x = name, y = 1, fill = color)) +
     ggplot2::geom_col(width = 1) +
     ggplot2::geom_text(ggplot2::aes(label = color), vjust = 1.5, color = "white", size = 3.5, fontface = "bold") +
-    ggplot2::geom_text(ggplot2::aes(label = names(pal)), vjust = -0.5, color = "black", size = 3.5) +
+    ggplot2::geom_text(ggplot2::aes(label = names(pal)), vjust = -0.5, color = "black", size = 3.5, angle = 45) +
     ggplot2::scale_fill_identity() +
     ggplot2::labs(title = paste("Project Palette:", palette_name)) +
     ggplot2::theme_void() +
