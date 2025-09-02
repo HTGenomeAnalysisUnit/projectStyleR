@@ -52,7 +52,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
 
 2. **Using Color Palettes**
 
-The `scale_color_project()` and `scale_fill_project()` functions apply palettes from your `palettes.yaml`.
+The `scale_color_project()` and `scale_fill_project()` functions apply palettes from your `palettes.yaml` for discrete values. The corresponding `scale_color_project_c()` and `scale_fill_project_c()` functions handle continuous values.
 
 ```R
 # Use the default ggsci::scale_color_npg() fallback
@@ -66,7 +66,15 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
   geom_point(size = 3) +
   scale_color_project(palette = "vibrant", name = "Iris Species") +
   theme_project()
+
+# Apply color for a continuous scale
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Petal.Length)) +
+  geom_point(size = 3) +
+  scale_color_project_c(palette = "vibrant") +
+  theme_project()
 ```
+
+When no palette name is specified the package will use the fill/color NPG scale from the `ggsci` package (`scale_color_npg`, `scale_fill_npg`) for discrete values, or the GSEA scale (`scale_color_gsea`, `scale_fill_gsea`) for continuous values.
 
 3. **Viewing Palettes**
 
@@ -103,6 +111,18 @@ To achieve consistent styling across your project you can either
 - create dedicated `palettes.yaml` and `themes.yaml` files for your project and ideally host them in the project GitHub repository. Then configure your scripts to always load these files from the centralized project source using the `load_project_palettes()` and `load_project_themes()` functions.
 
 When defining fonts, please use the [official Google fonts](https://fonts.google.com/).
+
+For best results when defining a palette to be used in a continuous scales, you should define lists of colors, ordered to create a nice gradient. For example 
+
+```yaml
+example_continuous:
+  - "#4DBBD5FF"
+  - "#00A087FF"
+  - "#3C5488FF"
+  - "#F39B7FFF"
+  - "#8491B4FF"
+  - "#DC0000FF"
+```
 
 ## 📝 License
 

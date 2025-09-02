@@ -3,6 +3,8 @@ export(display_project_palette)
 export(load_project_palettes)
 export(scale_color_project)
 export(scale_fill_project)
+export(scale_color_project_c)
+export(scale_fill_project_c)
 export(available_palettes)
 
 # Export functions for themes
