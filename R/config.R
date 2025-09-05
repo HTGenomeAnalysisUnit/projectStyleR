@@ -195,10 +195,10 @@ available_themes <- function() {
     if (grepl("^https?://", path)) {
       headers <- NULL
       if ((grepl("raw\\.githubusercontent\\.com", path) || grepl("github\\.com", path)) && !is.null(pat)) {
-        headers <- add_headers(Authorization = paste("token", pat))
+        headers <- httr::add_headers(Authorization = paste("token", pat))
       }
-      response <- GET(path, config = headers, write_disk(tmp_file, overwrite = TRUE))
-      stop_for_status(response, task = paste("download font from", path))
+      response <- httr::GET(path, config = headers, httr::write_disk(tmp_file, overwrite = TRUE))
+      httr::stop_for_status(response, task = paste("download font from", path))
     } else {
       if (!file.exists(path)) {
         warning("Local font file not found: ", path)
