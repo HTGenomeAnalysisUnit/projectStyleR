@@ -1,0 +1,26 @@
+# Example of a named palette
+# This is ideal for a discrete color scale
+# The names will be used and mapped precisely to data labels
+primary:
+  group1: "#0A3B5C"
+  group2: "#56B4E9"
+  group3: "#E69F00"
+  group4: "#2F2F2F"
+  group5: "#D3D3D3"
+
+# Example of a palette defined as a list of named colors
+vibrant:
+  magenta: "#CC79A7"
+  green: "#009E73"
+  yellow: "#F0E442"
+  blue: "#0072B2"
+  vermillion: "#D55E00"
+
+# Example of a palette defined as an ordered list of colors
+# This is ideal for a continuous color scale or when label-color mapping is not needed
+muted_tones:
+  - "#BCB382"
+  - "#618A3D"
+  - "#9A4242"
+  - "#556B73"
+  - "#3B4C55"

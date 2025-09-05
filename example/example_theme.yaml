@@ -1,0 +1,28 @@
+# Example theme
+# When you provide only font_family the package will first check for system fonts
+# then attempt to download from Google Fonts.
+default:
+  base_theme: "theme_minimal"
+  font_family: "Fira Sans"
+  axis_text_size: 9
+  axis_title_size: 11
+  # These are parsed as arguments to theme()
+  other_settings:
+    plot.title.position: "plot"
+    plot.caption.position: "plot"
+    legend.position: "bottom"
+    plot.caption: "element_text(hjust = 1, color = 'grey50')"
+
+# You can also provide custom fonts that will be installed from tff files
+# Note the name defined must match the actual font name in the ttf file.
+# You should also set the same font in the `font_family` field below.
+# The files can be loaded either from local paths or URLs.
+font_theme:
+  fonts:
+    Open Sans:
+      - "https://raw.githubusercontent.com/HTGenomeAnalysisUnit/projectstyler/refs/heads/main/example/OpenSans-Italic-VariableFont.ttf"
+      - "https://raw.githubusercontent.com/HTGenomeAnalysisUnit/projectstyler/refs/heads/main/example/OpenSans-VariableFont.ttf"
+  base_theme: "theme_bw"
+  font_family: "Open Sans"
+  axis_text_size: 8
+  axis_title_size: 10

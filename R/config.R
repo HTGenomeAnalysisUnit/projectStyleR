@@ -63,7 +63,7 @@ get_project_palettes <- function() {
 #' @param path A file path or URL pointing to a valid YAML theme configuration file.
 #' @param github_pat A GitHub Personal Access Token (PAT) for accessing private repositories.
 #' @export
-load_project_themes <- function(path, github_pat) {
+load_project_themes <- function(path, github_pat = NULL, github_pat_fonts = NULL) {
   content <- .fetch_config_content(path, github_pat)
   tryCatch({
     .palette_env$themes <- yaml::read_yaml(text = content)
@@ -71,6 +71,31 @@ load_project_themes <- function(path, github_pat) {
   }, error = function(e) {
     stop("Failed to load or parse the theme YAML file: ", e$message)
   })
+
+  # Download and register any custom fonts specified in the themes
+  tryCatch({
+    pat_for_fonts <- if (!is.null(github_pat_fonts)) {
+      if (tolower(github_pat_fonts) == "none") NULL else github_pat_fonts
+    } else {
+      github_pat
+    }
+    
+    # Iterate through each theme to find font definitions
+    for (theme_name in names(themes_config)) {
+      theme <- themes_config[[theme_name]]
+      if (!is.null(theme$fonts) && is.list(theme$fonts)) {
+        message("Processing custom fonts for theme: '", theme_name, "'")
+        # For each font family (e.g., "Open Sans")
+        for (font_family in names(theme$fonts)) {
+          .process_font_family(font_family, theme$fonts[[font_family]], pat_for_fonts)
+        }
+      }
+    }
+    message("Successfully loaded custom fonts specified in themes.")
+  }, error = function(e) {
+    stop("Failed to load or process custom fonts: ", e$message)
+  })
+
 }
 
 #' Get the currently loaded project theme
@@ -84,6 +109,28 @@ get_project_themes <- function() {
     stop("No themes loaded. Please use load_project_themes() or reload the package.", call. = FALSE)
   }
   themes
+}
+
+#' Log a list of available palettes
+#'
+#' @export
+available_palettes <- function() {
+  palettes <- get_project_palettes()
+  message("Available palettes:")
+  for (name in names(palettes)) {
+    message(" - ", name)
+  }
+}
+
+#' Log a list of available themes
+#'
+#' @export
+available_themes <- function() {
+  themes <- get_project_themes()
+  message("Available themes:")
+  for (name in names(themes)) {
+    message(" - ", name)
+  }
 }
 
 #' Internal helper to fetch content from local path or URL
@@ -111,24 +158,57 @@ get_project_themes <- function() {
   }
 }
 
-#' Log a list of available palettes
-#'
-#' @export
-available_palettes <- function() {
-  palettes <- get_project_palettes()
-  message("Available palettes:")
-  for (name in names(palettes)) {
-    message(" - ", name)
+#' Processes a list of font files for a given family
+#' @noRd
+.process_font_family <- function(family, files, pat) {
+  font_paths <- list()
+  
+  # Download and categorize each font file
+  for (file_path in files) {
+    local_path <- .fetch_font_file(file_path, pat)
+    if (!is.null(local_path)) {
+      # Guess style from filename
+      if (grepl("bolditalic|bold_italic|bold-italic|boldoblique|bold_oblique|bold-oblique", file_path, ignore.case = TRUE)) {
+        font_paths$bolditalic <- local_path
+      } else if (grepl("italic|oblique", file_path, ignore.case = TRUE)) {
+        font_paths$italic <- local_path
+      } else if (grepl("bold", file_path, ignore.case = TRUE)) {
+        font_paths$bold <- local_path
+      } else {
+        font_paths$regular <- local_path
+      }
+    }
+  }
+  
+  if (length(font_paths) > 0) {
+    message("  Registering font family: '", family, "' with ", paste(names(font_paths), collapse=", "))
+    do.call(sysfonts::font_add, c(list(family = family), font_paths))
   }
 }
 
-#' Log a list of available themes
-#'
-#' @export
-available_themes <- function() {
-  themes <- get_project_themes()
-  message("Available themes:")
-  for (name in names(themes)) {
-    message(" - ", name)
-  }
+#' Fetches a single font file from a URL or local path
+#' @noRd
+.fetch_font_file <- function(path, pat) {
+  tmp_file <- tempfile(fileext = paste0(".", tools::file_ext(path)))
+  
+  tryCatch({
+    if (grepl("^https?://", path)) {
+      headers <- NULL
+      if ((grepl("raw\\.githubusercontent\\.com", path) || grepl("github\\.com", path)) && !is.null(pat)) {
+        headers <- add_headers(Authorization = paste("token", pat))
+      }
+      response <- GET(path, config = headers, write_disk(tmp_file, overwrite = TRUE))
+      stop_for_status(response, task = paste("download font from", path))
+    } else {
+      if (!file.exists(path)) {
+        warning("Local font file not found: ", path)
+        return(NULL)
+      }
+      file.copy(path, tmp_file, overwrite = TRUE)
+    }
+    return(tmp_file)
+  }, error = function(e) {
+    warning("Failed to fetch font file '", path, "': ", e$message)
+    return(NULL)
+  })
 }

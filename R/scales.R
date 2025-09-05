@@ -9,11 +9,12 @@
 #' @param ... Additional arguments passed to `ggplot2::discrete_scale`.
 #' @export
 scale_color_project <- function(palette = "default", unseen.color = "#B3B3B3", ...) {
-  if (palette == "default") {
+  palettes <- get_project_palettes() 
+  if (palette == "default" && is.null(palettes[["default"]])) {
     return(ggsci::scale_color_npg(...))
   }
   
-  pal <- get_project_palettes()[[palette]]
+  pal <- palettes[[palette]]
   if (is.null(pal)) {
     stop(paste("Palette '", palette, "' not found."), call. = FALSE)
   }
@@ -32,11 +33,12 @@ scale_color_project <- function(palette = "default", unseen.color = "#B3B3B3", .
 #' @param ... Additional arguments passed to `ggplot2::discrete_scale`.
 #' @export
 scale_fill_project <- function(palette = "default", unseen.color = "#B3B3B3", ...) {
-  if (palette == "default") {
+  palettes <- get_project_palettes() 
+  if (palette == "default" && is.null(palettes[["default"]])) {
     return(ggsci::scale_fill_npg(...))
   }
 
-  pal <- get_project_palettes()[[palette]]
+  pal <- palettes[[palette]]
   if (is.null(pal)) {
     stop(paste("Palette '", palette, "' not found."), call. = FALSE)
   }
@@ -56,11 +58,12 @@ scale_fill_project <- function(palette = "default", unseen.color = "#B3B3B3", ..
 #' @param ... Additional arguments passed to `ggplot2::scale_color_gradientn`.
 #' @export
 scale_color_project_c <- function(palette = "default", ...) {
-  if (palette == "default") {
+  palettes <- get_project_palettes() 
+  if (palette == "default" && is.null(palettes[["default"]])) {
     return(ggsci::scale_color_gsea(...))
   }
 
-  pal <- get_project_palettes()[[palette]]
+  pal <- palettes[[palette]]
   if (is.null(pal)) {
     stop(paste("Palette '", palette, "' not found."), call. = FALSE)
   }
@@ -76,11 +79,12 @@ scale_color_project_c <- function(palette = "default", ...) {
 #' @param ... Additional arguments passed to `ggplot2::scale_fill_gradientn`.
 #' @export
 scale_fill_project_c <- function(palette = "default", ...) {
-  if (palette == "default") {
+  palettes <- get_project_palettes() 
+  if (palette == "default" && is.null(palettes[["default"]])) {
     return(ggsci::scale_fill_gsea(...))
   }
 
-  pal <- get_project_palettes()[[palette]]
+  pal <- palettes[[palette]]
   if (is.null(pal)) {
     stop(paste("Palette '", palette, "' not found."), call. = FALSE)
   }

@@ -23,16 +23,23 @@ theme_project <- function(theme_name = "default", ...) {
   theme_config <- project_themes[[theme_name]]
 
   # 2. Get the base theme function (e.g., theme_minimal)
-  base_theme_func <- get(theme_config$base_theme, as.environment("package:ggplot2"))
+  base_theme_func <- if (!is.null(theme_config$base_theme) && exists(theme_config$base_theme, where = "package:ggplot2")) {
+    get(theme_config$base_theme, as.environment("package:ggplot2"))
+  } else {
+    ggplot2::theme_bw # Fallback if base_theme isn't specified or found
+  }
 
   # 3. Handle the font
   font_family <- theme_config$font_family
-  tryCatch({
-    sysfonts::font_add_google(font_family, font_family)
-    showtext::showtext_auto()
-  }, error = function(e) {
-    warning(paste("Could not download or register font:", font_family, ". It may need to be installed manually."))
-  })
+  showtext::showtext_auto()
+  if (!font_family %in% sysfonts::font_families()) {
+    tryCatch({
+      message("Font '", font_family, "' not found locally. Attempting to download from Google Fonts.")
+      sysfonts::font_add_google(font_family, font_family)
+    }, error = function(e) {
+      warning(paste("Could not download or register font:", font_family, ". It may need to be installed manually."))
+    })
+  }
 
   # 4. Construct theme() arguments from YAML config
   theme_args <- list()
