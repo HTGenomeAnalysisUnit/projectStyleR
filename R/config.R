@@ -81,8 +81,8 @@ load_project_themes <- function(path, github_pat = NULL, github_pat_fonts = NULL
     }
     
     # Iterate through each theme to find font definitions
-    for (theme_name in names(themes_config)) {
-      theme <- themes_config[[theme_name]]
+    for (theme_name in names(.palette_env$themes)) {
+      theme <- .palette_env$themes[[theme_name]]
       if (!is.null(theme$fonts) && is.list(theme$fonts)) {
         message("Processing custom fonts for theme: '", theme_name, "'")
         # For each font family (e.g., "Open Sans")
