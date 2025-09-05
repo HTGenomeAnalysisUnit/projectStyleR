@@ -29,7 +29,50 @@ remotes::install_github("https://github.com/HTGenomeAnalysisUnit/projectStyleR")
 
 ## 📊 Usage
 
-### 1. Applying a Project Theme
+### 1. Load configurations
+
+The palettes and themes for you project can be defined in YAML files and the imported using `load_project_palettes()` and `load_project_themes()`. By default, the package uses the `YAML` files it was installed with. You can override this by pointing to your own local or remote files.
+
+```R
+# Load palettes from a local file
+load_project_palettes("path/to/my_palettes.yaml")
+
+# Load themes from a raw GitHub URL
+load_project_themes("https://raw.githubusercontent.com/user/repo/main/configs/project_themes.yaml")
+
+# Load from a private GitHub repository
+load_project_palettes("https://raw.githubusercontent.com/user/repo/main/configs/project_palettes.yaml", github_pat = "your_github_pat")
+
+# All subsequent function calls will use the loaded configurations
+```
+
+When loading a theme that requires to download some fonts, an additional token can be provided for font access using the `github_pat_fonts` argument.
+When `github_pat_fonts` is `NULL` or not set, and `github_pat` is set, the `github_pat` value is used to access both YAML file and font files
+If you want to avoid this (for example the YAML is hosted in a restricted repository, while font files are taken from a public one), you can set explicitly `github_pat_fonts = "none"`.
+
+```python
+# Option 1 github_pat token is used to access both YAML file and font files
+GITHUB_TOKEN = Sys.getenv('GITHUB_TOKEN')
+load_project_themes(
+   "https://raw.githubusercontent.com/your/private/repo/palettes.yaml",
+   github_pat=GITHUB_TOKEN)
+
+# Option 2 we use 2 different token to access both YAML file and font files
+GITHUB_TOKEN = Sys.getenv('GITHUB_TOKEN')
+GITHUB_TOKEN_FONTS = Sys.getenv('GITHUB_TOKEN_FONTS')
+load_project_themes(
+   "https://raw.githubusercontent.com/your/private/repo/palettes.yaml",
+   github_pat=GITHUB_TOKEN, github_pat_fonts=GITHUB_TOKEN_FONTS)
+
+# Option 3 we need a token to access the YAML file, but font file are publicly available font files
+GITHUB_TOKEN = Sys.getenv('GITHUB_TOKEN')
+GITHUB_TOKEN_FONTS = Sys.getenv('GITHUB_TOKEN_FONTS')
+load_project_themes(
+   "https://raw.githubusercontent.com/your/private/repo/palettes.yaml",
+   github_pat=GITHUB_TOKEN, github_pat_fonts="none")
+```
+
+### 2. Applying a Project Theme
 
 The `theme_project()` function applies a predefined theme from your `themes.yaml` file.
 
@@ -50,7 +93,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   labs(title = "Publication-Ready Theme")
 ```
 
-### 2. Using Color Palettes
+### 3. Using Color Palettes
 
 The `scale_color_project()` and `scale_fill_project()` functions apply palettes from your `palettes.yaml` for discrete values. The corresponding `scale_color_project_c()` and `scale_fill_project_c()` functions handle continuous values.
 
@@ -76,7 +119,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Petal.Length)) +
 
 When no palette name is specified the package will use the fill/color NPG scale from the `ggsci` package (`scale_color_npg`, `scale_fill_npg`) for discrete values, or the GSEA scale (`scale_color_gsea`, `scale_fill_gsea`) for continuous values.
 
-### 3. Viewing Palettes
+### 4. Viewing Palettes
 
 Visualize any available palette to see its colors and names.
 
@@ -89,49 +132,6 @@ Get the list of available themes or palette
 ```R
 available_palettes()
 available_themes()
-```
-
-### 4. Custom Configurations
-
-By default, the package uses the `YAML` files it was installed with. You can override this by pointing to your own local or remote files.
-
-```R
-# Load palettes from a local file
-load_project_palettes("path/to/my_palettes.yaml")
-
-# Load themes from a raw GitHub URL
-load_project_themes("https://raw.githubusercontent.com/user/repo/main/configs/project_themes.yaml")
-
-# Load from a private GitHub repository
-load_project_palettes("https://raw.githubusercontent.com/user/repo/main/configs/project_palettes.yaml", github_pat = "your_github_pat")
-
-# All subsequent function calls will use the loaded configurations
-```
-
-When loading a theme that requires to download some fonts, an additional token can be provided for font access using the `github_pat_fonts` argument.
-When `github_pat_fonts` is `NULL` or not set, and `github_pat` is set, the `github_pat` value is used to access both YAML file and font files
-If you want to avoid this (for example the YAML is hosted in a restricted repository, while font files are taken from a public one), you can set explicitly `github_pat_fonts = "none"`.
-
-```python
-# Option 1 github_pat token is used to access both YAML file and font files
-GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
-scp.load_project_themes(
-   "https://raw.githubusercontent.com/your/private/repo/palettes.yaml",
-   github_pat=GITHUB_TOKEN)
-
-# Option 2 we use 2 different token to access both YAML file and font files
-GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
-GITHUB_TOKEN_FONTS = os.environ['GITHUB_TOKEN_FONTS']
-scp.load_project_themes(
-   "https://raw.githubusercontent.com/your/private/repo/palettes.yaml",
-   github_pat=GITHUB_TOKEN, github_pat_fonts=GITHUB_TOKEN_FONTS)
-
-# Option 3 we need a token to access the YAML file, but font file are publicly available font files
-GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
-GITHUB_TOKEN_FONTS = os.environ['GITHUB_TOKEN_FONTS']
-scp.load_project_themes(
-   "https://raw.githubusercontent.com/your/private/repo/palettes.yaml",
-   github_pat=GITHUB_TOKEN, github_pat_fonts="none")
 ```
 
 ## ⚙️ Configuration Files
